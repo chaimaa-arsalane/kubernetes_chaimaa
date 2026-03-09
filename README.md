@@ -150,3 +150,65 @@ Don't forget to exit the container with:
 exit
 ```
 
+
+
+
+------------------------------------------------------------------------
+
+# Mise à jour de l'image Docker (version v2)
+
+# 1. D'abord, taguer ta nouvelle image
+docker tag <imageID> chaimaaaa/chaimaa:v2
+
+# 2. Pusher sur Docker Hub
+docker push chaimaaaa/chaimaa:v2
+
+# 3. Mettre à jour Kubernetes
+kubectl set image deployment/myservice myservice=chaimaaaa/chaimaa:v2
+
+# 4. Vérifier la mise à jour
+kubectl rollout status deployment/myservice
+------------------------------------------------------------------------
+
+# Vérifier le nom exact
+kubectl get deployments
+
+# Mettre à jour l'image (commande corrigée)
+kubectl set image deployment/myservice myservice=chaimaaaa/chaimaa:latest
+
+# Voir le statut de la mise à jour
+kubectl rollout status deployment/myservice
+
+# Set up Ingress on Minikube with the NGINX Ingress Controller
+# Enable the NGINX Ingress controller:
+
+minikube addons enable ingress
+# Verify that the NGINX Ingress controller is running:
+
+kubectl get pods -n ingress-nginx
+# Create a Deployment and expose it as a NodePort (not a loadbalancer).
+
+Check if it works.
+
+A yaml file for ingress: https://github.com/charroux/kubernetes-minikube/blob/main/ingress.yml
+
+kubectl apply -f ingress.yml
+# Retrieve the IP address of Ingress:
+
+kubectl get ingress
+
+# Where address is given by:
+
+minikube ip
+
+On Windows : edit the c:\windows\system32\drivers\etc\hosts file, add
+
+127.0.0.1 myservice.info
+
+Enable a tunnel for Minikube:
+
+minikube addons enable ingress-dns
+minikube tunnel
+Then check in your Web browser:
+
+http://myservice.info/
